@@ -113,3 +113,8 @@ func main() {
 Middleware es una técnica de programación que se utiliza para agregar funcionalidad a una aplicación. En Go, se pueden utilizar middleware para agregar funcionalidad como autenticación, autorización, logging, etc.
 
 
+### Por qué es RESTful
+
+Sigue estrictamente los principios REST.
+Los métodos y rutas son consistentes con las acciones realizadas.
+Los recursos están representados de forma uniforme.
