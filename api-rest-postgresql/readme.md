@@ -141,3 +141,70 @@ Usando Homebrew (macOS):
 Ejecutar golangci-lint
 
    golangci-lint run
+
+### Despliegue
+
+El archivo `deploy.yml` en el contexto de GitHub Actions es un archivo de configuración que define un flujo de trabajo automatizado para tu proyecto. Este flujo de trabajo puede incluir tareas como la ejecución de pruebas, el linting del código, la construcción de artefactos, y el despliegue de tu aplicación. Aquí te explico cómo funciona y qué son los componentes clave como los "jobs".
+
+### ¿Qué es un `deploy.yml`?
+
+- **Flujo de Trabajo Automatizado:** Define una serie de pasos que se ejecutan automáticamente en respuesta a eventos específicos en tu repositorio, como un push o una pull request.
+- **Integración Continua (CI):** Permite verificar automáticamente que el código nuevo no rompa la aplicación existente.
+- **Despliegue Continuo (CD):** Automatiza el proceso de despliegue de la aplicación a un entorno de producción o de prueba.
+
+### Componentes Clave
+
+1. **Eventos (`on`):**
+   - Especifica los eventos que disparan el flujo de trabajo. Por ejemplo, `push` o `pull_request` en la rama `main`.
+
+2. **Jobs:**
+   - Un "job" es una unidad de trabajo que se ejecuta en un entorno de ejecución. Cada job puede contener múltiples pasos.
+   - Los jobs se ejecutan en paralelo de forma predeterminada, pero puedes configurarlos para que se ejecuten secuencialmente si uno depende de otro.
+
+3. **Steps:**
+   - Cada job contiene una serie de pasos (`steps`) que se ejecutan secuencialmente.
+   - Los pasos pueden incluir acciones predefinidas de GitHub, comandos de shell, o acciones personalizadas.
+
+4. **Runners:**
+   - Los jobs se ejecutan en "runners", que son entornos de ejecución proporcionados por GitHub o autohospedados.
+
+### Ejemplo de `deploy.yml`
+
+```yaml
+name: Lint and Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.23'
+
+    - name: Install golangci-lint
+      run: |
+        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.50.1
+
+    - name: Run golangci-lint
+      run: |
+        cd api-rest-postgresql
+        golangci-lint run
+
+    - name: Deploy to Render
+      if: success()
+      env:
+        RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+      run: |
+        curl "$RENDER_DEPLOY_HOOK_URL"
+```
