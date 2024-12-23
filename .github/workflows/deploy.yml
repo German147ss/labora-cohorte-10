@@ -27,6 +27,7 @@ jobs:
 
     - name: Run golangci-lint
       run: |
+        cd api-rest-postgresql
         golangci-lint run
 
     - name: Deploy to Render
