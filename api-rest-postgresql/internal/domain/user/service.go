@@ -1,5 +1,8 @@
 package user
 
+// cantidad de intentos de creacion de usuarios
+var attemptsCreateUsers int
+
 type Service struct {
 	repo Repository
 }
@@ -17,6 +20,7 @@ func (s *Service) GetUserByID(id int) (*User, error) {
 }
 
 func (s *Service) CreateUser(user *User) error {
+	attemptsCreateUsers++
 	if err := user.Validate(); err != nil {
 		return err
 	}

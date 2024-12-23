@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api-rest-postgresql/internal/config"
 	"api-rest-postgresql/internal/domain/user"
 	"api-rest-postgresql/internal/infraestructure/http/handler"
 	"api-rest-postgresql/internal/infraestructure/repository"
@@ -15,14 +16,21 @@ func main() {
 		    if err != nil {
 		        log.Fatalf("Error loading config: %v", err)
 		    }
-
-		    // Inicializar conexión a la base de datos
-		    db, err := database.NewPostgresConnection(cfg.Database)
-		    if err != nil {
-		        log.Fatalf("Error connecting to database: %v", err)
-		    }
-		    defer db.Close()
 	*/
+
+	newDatabase := config.DatabaseConfig{
+		Host:     "localhost",
+		Port:     5432,
+		User:     "germanmendieta",
+		Password: "admin",
+		DBName:   "myapp",
+	}
+	// Inicializar conexión a la base de datos
+	db, err := config.NewPostgresConnection(newDatabase)
+	if err != nil {
+		log.Fatalf("Error connecting to database: %v", err)
+	}
+	defer db.Close()
 
 	// Inicializar dependencias
 	userRepo := repository.NewUserRepository()

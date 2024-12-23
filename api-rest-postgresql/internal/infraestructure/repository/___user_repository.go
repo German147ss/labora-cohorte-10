@@ -1,6 +1,5 @@
 package repository
 
-/*
 import (
 	"api-rest-postgresql/internal/domain/user"
 	"database/sql"
@@ -85,4 +84,3 @@ func (r *PostgresUserRepository) Delete(id int) error {
 	}
 	return nil
 }
-*/

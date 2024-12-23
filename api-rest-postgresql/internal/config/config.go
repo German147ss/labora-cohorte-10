@@ -2,10 +2,6 @@ package config
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-
-	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -27,6 +23,7 @@ type ServerConfig struct {
 	Host string
 }
 
+/*
 func LoadConfig() (*Config, error) {
 	// Carga el archivo .env
 	if err := godotenv.Load(); err != nil {
@@ -60,11 +57,8 @@ func LoadConfig() (*Config, error) {
 
 	return config, nil
 }
-
+*/
 // GetDSN retorna el Data Source Name para la conexión a PostgreSQL
 func (c *DatabaseConfig) GetDSN() string {
-	return fmt.Sprintf(
-		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
-		c.Host, c.Port, c.User, c.Password, c.DBName, c.SSLMode,
-	)
+	return fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", c.Host, c.Port, c.User, c.Password, c.DBName)
 }

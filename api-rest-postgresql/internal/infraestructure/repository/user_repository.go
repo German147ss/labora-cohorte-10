@@ -6,26 +6,27 @@ import (
 	"sync"
 )
 
-type UserRepository struct {
+// memory
+type UserMemoryRepository struct {
 	users  []user.User
 	nextID int
 	mutex  sync.RWMutex
 }
 
-func NewUserRepository() *UserRepository {
-	return &UserRepository{
+func NewUserRepository() *UserMemoryRepository {
+	return &UserMemoryRepository{
 		users:  make([]user.User, 0),
 		nextID: 1,
 	}
 }
 
-func (r *UserRepository) FindAll() ([]user.User, error) {
+func (r *UserMemoryRepository) FindAll() ([]user.User, error) {
 	r.mutex.RLock()
 	defer r.mutex.RUnlock()
 	return r.users, nil
 }
 
-func (r *UserRepository) FindByID(id int) (*user.User, error) {
+func (r *UserMemoryRepository) FindByID(id int) (*user.User, error) {
 	r.mutex.RLock()
 	defer r.mutex.RUnlock()
 
@@ -37,7 +38,7 @@ func (r *UserRepository) FindByID(id int) (*user.User, error) {
 	return nil, errors.New("user not found")
 }
 
-func (r *UserRepository) Create(u *user.User) error {
+func (r *UserMemoryRepository) Create(u *user.User) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -47,7 +48,7 @@ func (r *UserRepository) Create(u *user.User) error {
 	return nil
 }
 
-func (r *UserRepository) Update(u *user.User) error {
+func (r *UserMemoryRepository) Update(u *user.User) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -60,7 +61,7 @@ func (r *UserRepository) Update(u *user.User) error {
 	return errors.New("user not found")
 }
 
-func (r *UserRepository) Delete(id int) error {
+func (r *UserMemoryRepository) Delete(id int) error {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 

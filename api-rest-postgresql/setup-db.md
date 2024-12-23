@@ -24,20 +24,9 @@ CREATE DATABASE myapp;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    email VARCHAR(100) NOT NULL UNIQUE
 );
 
--- Crear índices
-CREATE INDEX idx_users_email ON users(email);
-
--- Crear un usuario para la aplicación (opcional, pero recomendado)
-CREATE USER myapp_user WITH PASSWORD 'myapp_password';
-GRANT ALL PRIVILEGES ON DATABASE myapp TO myapp_user;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO myapp_user;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO myapp_user;
-```
 
 
 4. Para acceder posteriormente:
