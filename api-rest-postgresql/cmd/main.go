@@ -32,14 +32,18 @@ func main() {
 	}
 	defer db.Close()
 
-	// Inicializar dependencias
-	userRepo := repository.NewUserRepository()
-	userService := user.NewService(userRepo)
+	// Inicializar dependencias - repository
+	//userRepo := repository.NewUserRepository()
+	userPostgresRepo := repository.NewPostgresUserRepository(db)
+
+	userService := user.NewService(userPostgresRepo)
 	userHandler := handler.NewUserHandler(userService)
 
 	// Configurar rutas
-	http.HandleFunc("/users", userHandler.HandleUsers)
-	http.HandleFunc("/users/", userHandler.HandleUserByID)
+	http.HandleFunc("GET /users", userHandler.GetUsers)
+	http.HandleFunc("POST /users", userHandler.CreateUser)
+	http.HandleFunc("GET /users/{id}", userHandler.GetUserByID)
+	http.HandleFunc("PUT /users/{id}", userHandler.UpdateUser)
 
 	// Iniciar servidor
 	log.Println("Server running on http://localhost:8080")

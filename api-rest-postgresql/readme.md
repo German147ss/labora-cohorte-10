@@ -126,3 +126,18 @@ go get github.com/lib/pq
     - Es una librería para interactuar con PostgreSQL desde Go
     - Proporciona funciones para ejecutar consultas SQL y manejar errores
     - Facilita la manipulación de datos en la base de datos
+
+
+- Linter
+
+Un linter es una herramienta que analiza el código fuente para identificar errores, problemas de estilo, y posibles bugs. Su objetivo principal es mejorar la calidad del código y asegurar que sigue ciertas convenciones y estándares.
+
+Instalación de golangci-lint
+
+Usando Homebrew (macOS):
+
+   brew install golangci-lint
+
+Ejecutar golangci-lint
+
+   golangci-lint run
