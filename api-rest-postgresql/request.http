@@ -11,18 +11,18 @@ POST {{host}}/users
 Content-Type: application/json
 
 {
-    "name": "Nuevo Usuario",
-    "email": "nuevo.usuario@example.com"
+    "name": "Nuevo Usuario3",
+    "email": "nuevo.usuario3@example.com"
 }
 
 ### Actualizar un usuario existente
-PUT {{host}}/users/1
+PUT {{host}}/users/1999
 Content-Type: application/json
 
 {
-    "name": "Usuario Actualizados",
-    "email": "usuario.actualizadoss@example.com"
+    "name": "usuario 1 editado",
+    "email": "usuario.editado.@example.com"
 }
 
 ### Eliminar un usuario
-DELETE {{host}}/users/1
+DELETE {{host}}/users/2

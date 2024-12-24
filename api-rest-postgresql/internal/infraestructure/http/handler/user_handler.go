@@ -83,10 +83,18 @@ func (h *UserHandler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(u)
 }
 
-func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request, id int) {
+func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
+	idString := r.PathValue("id")
+
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	if err := h.userService.DeleteUser(id); err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusCreated)
 }

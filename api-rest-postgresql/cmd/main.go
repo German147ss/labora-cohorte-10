@@ -5,6 +5,7 @@ import (
 	"api-rest-postgresql/internal/domain/user"
 	"api-rest-postgresql/internal/infraestructure/http/handler"
 	"api-rest-postgresql/internal/infraestructure/repository"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -33,9 +34,10 @@ func main() {
 	defer db.Close()
 
 	// Inicializar dependencias - repository
-	//userRepo := repository.NewUserRepository()
+	//userMemoryRepo := repository.NewUserRepository()
 	userPostgresRepo := repository.NewPostgresUserRepository(db)
 
+	fmt.Println(userPostgresRepo)
 	userService := user.NewService(userPostgresRepo)
 	userHandler := handler.NewUserHandler(userService)
 
@@ -44,6 +46,7 @@ func main() {
 	http.HandleFunc("POST /users", userHandler.CreateUser)
 	http.HandleFunc("GET /users/{id}", userHandler.GetUserByID)
 	http.HandleFunc("PUT /users/{id}", userHandler.UpdateUser)
+	http.HandleFunc("DELETE /users/{id}", userHandler.DeleteUser)
 
 	// Iniciar servidor
 	log.Println("Server running on http://localhost:8080")

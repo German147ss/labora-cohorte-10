@@ -1,0 +1,2 @@
+cd api-rest-postgresql
+golangci-lint run
