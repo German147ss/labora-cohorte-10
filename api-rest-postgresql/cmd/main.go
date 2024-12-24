@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 )
 
 func main() {
@@ -19,12 +21,15 @@ func main() {
 		    }
 	*/
 
+	portAsString := os.Getenv("DB_PORT")
+	port, _ := strconv.Atoi(portAsString)
+
 	newDatabase := config.DatabaseConfig{
-		Host:     "localhost",
-		Port:     5432,
-		User:     "germanmendieta",
-		Password: "admin",
-		DBName:   "myapp",
+		Host:     os.Getenv("DB_HOST"),
+		Port:     port,
+		User:     os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		DBName:   os.Getenv("DB_NAME"),
 	}
 	// Inicializar conexión a la base de datos
 	db, err := config.NewPostgresConnection(newDatabase)
