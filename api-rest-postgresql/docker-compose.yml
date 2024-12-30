@@ -1,0 +1,22 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8090:8080"
+    depends_on:
+      - db
+    env_file: 
+      - .env
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5431:5431"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

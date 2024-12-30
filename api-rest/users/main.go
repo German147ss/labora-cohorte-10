@@ -13,15 +13,34 @@ type User struct {
 	Email string `json:"email"`
 }
 
-var users = []User{}
+var users = []User{
+	{ID: 1, Name: "John Doe", Email: "john.doe@example.com"},
+}
 var nextID = 1
 
 func main() {
-	http.HandleFunc("/users", handleUsers)
-	http.HandleFunc("/users/", handleUserByID)
+	http.HandleFunc("GET /users", GetUsers)
+	http.HandleFunc("POST /users", CreateUser)
 
 	log.Println("Server running on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func GetUsers(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(users)
+}
+
+func CreateUser(w http.ResponseWriter, r *http.Request) {
+	var user User
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+	user.ID = nextID
+	nextID++
+	users = append(users, user)
+	w.WriteHeader(http.StatusCreated)
 }
 
 func handleUsers(w http.ResponseWriter, r *http.Request) {

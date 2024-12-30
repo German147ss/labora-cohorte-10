@@ -18,11 +18,11 @@ const (
 
 func main() {
 	// Construir la cadena de conexión
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+	dataSourceName := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
 	// Conectar a la base de datos
-	db, err := sql.Open("postgres", psqlInfo)
+	db, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
 		log.Fatalf("Error opening database: %v", err)
 	}
@@ -47,10 +47,11 @@ func main() {
 	}
 
 	// Insertar un nuevo usuario
-	_, err = db.Exec(`INSERT INTO users (name, email) VALUES ($1, $2)`, "John Doe", "john.doe@example.com")
+	_, err = db.Exec(`INSERT INTO users (name, email) VALUES ($1, $2)`, "John Doe", "john.doeeeee@example.com")
 	if err != nil {
 		log.Fatalf("Error inserting user: %v", err)
 	}
+	fmt.Println("User inserted successfully")
 
 	// Consultar usuarios
 	rows, err := db.Query(`SELECT id, name, email FROM users`)
